@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 
+import entity.bullet.Bullet;
 import face.Attack;
 
 public class Plane extends FlyingObject implements Attack{

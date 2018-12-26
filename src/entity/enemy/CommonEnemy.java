@@ -1,4 +1,6 @@
-package entity;
+package entity.enemy;
+
+import entity.bullet.CommonBullet;
 
 /**
  * 普通的敌机 0号机

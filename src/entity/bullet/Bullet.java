@@ -1,8 +1,9 @@
-package entity;
+package entity.bullet;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import entity.FlyingObject;
 import play.PlayMain;
 
 /**

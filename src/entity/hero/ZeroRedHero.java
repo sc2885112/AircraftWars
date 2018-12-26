@@ -1,5 +1,7 @@
-package entity;
+package entity.hero;
 
+import entity.Plane;
+import entity.bullet.CommonBullet;
 import play.PlayMain;
 
 /**

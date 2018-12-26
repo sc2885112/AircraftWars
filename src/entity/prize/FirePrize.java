@@ -1,5 +1,6 @@
-package entity;
+package entity.prize;
 
+import entity.FlyingObject;
 import enu.PrizeCategory;
 import face.Prize;
 

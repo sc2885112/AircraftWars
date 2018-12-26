@@ -1,4 +1,4 @@
-package entity;
+package entity.bullet;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

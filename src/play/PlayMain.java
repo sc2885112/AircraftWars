@@ -29,15 +29,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import entity.Bullet;
-import entity.CommonEnemy;
-import entity.Enemy;
-import entity.EnemyThree;
-import entity.FirePrize;
 import entity.FlyingObject;
-import entity.LifePrize;
 import entity.Plane;
-import entity.ZeroRedHero;
+import entity.bullet.Bullet;
+import entity.enemy.CommonEnemy;
+import entity.enemy.Enemy;
+import entity.enemy.EnemyThree;
+import entity.hero.ZeroRedHero;
+import entity.prize.FirePrize;
+import entity.prize.LifePrize;
 import enu.GameStatus;
 import enu.HeroStatus;
 import enu.PrizeCategory;
@@ -234,6 +234,7 @@ public class PlayMain extends JPanel {
 		g.drawString("火力值 :" + hero.getFirepower(), x, y += 20);
 	}
 
+	//打开窗口开始游戏
 	public void startFrame() {
 		// 鼠标移动事件
 		addMouseMotionListener(new MouseMotionListener() {
@@ -432,7 +433,8 @@ public class PlayMain extends JPanel {
 	 * 移除越界的飞行物和子弹
 	 */
 	public void garbageRecovery() {
-
+		
+		//一秒执行一次
 		if (garbageRecoveryInterver % (1000 / intervel) == 0) {
 			ArrayList<Bullet> bulletsBak = new ArrayList<Bullet>();
 			ArrayList<FlyingObject> flyObjListBak = new ArrayList<FlyingObject>();

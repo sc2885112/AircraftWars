@@ -2,7 +2,7 @@ package face;
 
 import java.util.ArrayList;
 
-import entity.Bullet;
+import entity.bullet.Bullet;
 
 public interface Attack {
 	//·¢Éä¹¥»÷
