@@ -476,7 +476,7 @@ public class PlayMain extends JPanel {
 	
 	/**
 	 * 英雄机碰撞检测
-	 * 如果命数为
+	 * 如果命数为1则游戏结束返回true
 	 * @return
 	 */
 	public boolean collision() {
@@ -589,7 +589,8 @@ public class PlayMain extends JPanel {
 		if (prize.getCategory() == PrizeCategory.Fire) {
 			hero.setFirepower(hero.getFirepower() + 1);
 		}
-
+		
+		//懒得写了 - -
 		if (prize.getCategory() == PrizeCategory.Attackspeed) {
 
 		}
