@@ -56,6 +56,8 @@ public abstract class FlyingObject implements Flying{
 	
 	/**
 	 * 碰撞检查
+	 * 这个碰撞算法是我拷贝的别人的
+	 * 有些许误差
 	 * @return
 	 */
 	public boolean inspectCollision(FlyingObject flyObj){
