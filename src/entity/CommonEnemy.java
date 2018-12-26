@@ -1,13 +1,12 @@
 package entity;
 
-import face.Enemy;
 /**
  * 普通的敌机 0号机
  * @author lenovo
  */
-public class CommonEnemy extends Plane implements Enemy{
+public class CommonEnemy extends Enemy{
 	public CommonEnemy(){
-		this.setBullet(new CommonBullet(false));
+		this.setBullet(new CommonBullet(false,"../img/bullet/bullet2.png",6));
 		this.setAttackSpeed(1);
 		this.setFlySpeed(3);
 		this.setLife(1);
@@ -16,8 +15,9 @@ public class CommonEnemy extends Plane implements Enemy{
 	}
 
 	@Override
-	public int getScore() {
-		return 1;
+	public int getScope() {
+		// TODO Auto-generated method stub
+		return 10;
 	}
-	
+
 }

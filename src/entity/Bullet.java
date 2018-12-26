@@ -9,7 +9,7 @@ import play.PlayMain;
  * 子弹总类
  * @author lenovo
  */
-public class Bullet extends FlyingObject{
+public abstract class Bullet extends FlyingObject{
 	private int hurt;  //伤害值
 	private boolean type; //子弹的类别，是敌机发出还是英雄机发出
 	
@@ -33,7 +33,7 @@ public class Bullet extends FlyingObject{
 	 * 留给子类覆盖
 	 * @return
 	 */
-	public ArrayList<Bullet> getBullet(int x , int y ,int firepower){return null;}
+	public abstract ArrayList<Bullet> getBullet(int x , int y ,int firepower);
 
 	
 	@Override

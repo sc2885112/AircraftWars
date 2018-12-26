@@ -12,29 +12,35 @@ public class CommonBullet extends Bullet{
 		super(x, y, flySpeed, hurt , img , type);
 	}
 	
-	public CommonBullet(boolean type){
-		this.setFlySpeed(3); 
+	public CommonBullet(boolean type ,String imagePath,int flySpeed){
+		this.setFlySpeed(flySpeed); 
 		this.setHurt(1);
-		this.setImg("../img/bullet/bullet.png");
+		this.setImg(imagePath);
 		this.setType(type);
 	}
 	
 	@Override
 	public ArrayList<Bullet> getBullet(int x, int y ,int firepower) {
 		ArrayList<Bullet> result = new ArrayList<Bullet>();
-			if( firepower >= 3){
-				result.add(new CommonBullet((x - 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
-				result.add(new CommonBullet((x),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
-				result.add(new CommonBullet((x + 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
-			}
-			if( firepower == 2){
-				result.add(new CommonBullet((x + 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
-				result.add(new CommonBullet((x - 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
-			}
-			if(firepower == 1){
-				result.add(new CommonBullet(x,y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
-			}
+		
+		if(!this.getType()){
+			y = y + this.getImgHeight();
+		}
+		
+		if( firepower >= 3){
+			result.add(new CommonBullet((x - 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
+			result.add(new CommonBullet((x),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
+			result.add(new CommonBullet((x + 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
+		}
+		if( firepower == 2){
+			result.add(new CommonBullet((x + 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
+			result.add(new CommonBullet((x - 15),y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
+		}
+		if(firepower == 1){
+			result.add(new CommonBullet(x,y,this.getFlySpeed(),this.getHurt(),this.getImg(),this.getType()));
+		}
 		
 		return result;
 	}
+	
 }
