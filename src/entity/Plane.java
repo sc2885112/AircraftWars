@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import entity.bullet.Bullet;
 import face.Attack;
 
-public class Plane extends FlyingObject implements Attack{
+public abstract class Plane extends FlyingObject implements Attack{
 	
 	private int attackSpeed; //攻击速度
 	private int life; //生命值
