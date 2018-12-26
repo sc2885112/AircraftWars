@@ -48,15 +48,6 @@ public abstract class FlyingObject implements Flying{
 	}
 	
 	/**
-	 * 获取碰撞点的坐标数组
-	 * key 是x坐标，value是y坐标
-	 * @return
-	 */
-	public HashMap<Integer,Integer> getCollisionPoint() {
-		return null;
-	}
-	
-	/**
 	 * 越界检查
 	 */
 	public boolean isTransboundary(){
