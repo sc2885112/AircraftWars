@@ -7,12 +7,13 @@ import entity.FlyingObject;
 import play.PlayMain;
 
 /**
- * 子弹总类
+ * 武器总类
+ * 依赖在飞机类的属性上
  * @author sand monk
  */
 public abstract class Bullet extends FlyingObject{
 	private int hurt;  //伤害值
-	private boolean type; //子弹的类别，是敌机发出还是英雄机发出
+	private boolean type; //武器的类别，是敌机发出还是英雄机发出
 	
 	
 	public Bullet(int x, int y, int flySpeed,int hurt,BufferedImage img, boolean type) {
