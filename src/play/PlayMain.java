@@ -234,7 +234,7 @@ public class PlayMain extends JPanel {
 		g.drawString("火力值 :" + hero.getFirepower(), x, y += 20);
 	}
 
-	public void frameManage() {
+	public void startFrame() {
 		// 鼠标移动事件
 		addMouseMotionListener(new MouseMotionListener() {
 			@Override
@@ -530,18 +530,18 @@ public class PlayMain extends JPanel {
 		Bullet bullet;
 		Enemy enemy;
 		Prize prize;
-//		ArrayList<FlyingObject> flyObjBak;
-//		ArrayList<Bullet> bulletsBak;
+		// ArrayList<FlyingObject> flyObjBak;
+		// ArrayList<Bullet> bulletsBak;
 
 		if (!bullets.isEmpty()) {
 			for (int i = 0; i < bullets.size(); i++) {
 				bullet = bullets.get(i);
 				if (!flyObjList.isEmpty()) {
 					flyObj: for (int j = 0; j < flyObjList.size(); j++) {
-						
-						//如果子弹是英雄机发出
-						if(bullet.getType()){
-							
+
+						// 如果子弹是英雄机发出
+						if (bullet.getType()) {
+
 							if (bullet.inspectCollision(flyObjList.get(j))) {
 								if (flyObjList.get(j) instanceof Prize) {// 判断敌机是伤害敌机还是奖励
 									/**
@@ -549,7 +549,7 @@ public class PlayMain extends JPanel {
 									 */
 									prize = (Prize) flyObjList.get(j);
 									setPrize(prize);// 设置奖励
-									removeEnemy(j); 
+									removeEnemy(j);
 								} else {
 									/**
 									 * 用子弹的伤害值与敌机生命值相减 如果敌机生命值为0，删除敌机
@@ -561,14 +561,13 @@ public class PlayMain extends JPanel {
 										score += enemy.getScope();
 									}
 								}
-								
+
 								// 移除子弹
 								removeBullet(i);
 								break flyObj;
 							}
 						}
-						
-						
+
 					}
 				}
 
@@ -627,13 +626,10 @@ public class PlayMain extends JPanel {
 		bullets = listBak;
 	}
 
-	public void start() {
-		frameManage();
-	}
 
 	public static void main(String[] args) throws IOException {
 		PlayMain plMain = new PlayMain();
-		plMain.start();
+		plMain.startFrame();
 	}
 
 }
