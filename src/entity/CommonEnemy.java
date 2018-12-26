@@ -2,7 +2,7 @@ package entity;
 
 /**
  * 普通的敌机 0号机
- * @author lenovo
+ * @author sand monk
  */
 public class CommonEnemy extends Enemy{
 	public CommonEnemy(){

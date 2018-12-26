@@ -34,7 +34,6 @@ import entity.CommonEnemy;
 import entity.Enemy;
 import entity.EnemyThree;
 import entity.FirePrize;
-import entity.Plane;
 import entity.FlyingObject;
 import entity.LifePrize;
 import entity.Plane;

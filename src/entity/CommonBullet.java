@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 /**
  * ÆÕÍ¨µÄ×Óµ¯
- * @author lenovo
+ * @author sand monk
  */
 public class CommonBullet extends Bullet{
 	

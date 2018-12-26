@@ -3,7 +3,7 @@ package entity;
 
 /**
  * µÐ»úÈýºÅ
- * @author lenovo
+ * @author sand monk
  *
  */
 public class EnemyThree extends Enemy{

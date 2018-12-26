@@ -7,7 +7,7 @@ import play.PlayMain;
 
 /**
  * 子弹总类
- * @author lenovo
+ * @author sand monk
  */
 public abstract class Bullet extends FlyingObject{
 	private int hurt;  //伤害值

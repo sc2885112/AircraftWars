@@ -4,7 +4,7 @@ import play.PlayMain;
 
 /**
  * ÁãºÅºìÉ«»ú
- * @author lenovo
+ * @author sand monk
  *
  */
 public class ZeroRedHero extends Plane{
