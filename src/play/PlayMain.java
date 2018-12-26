@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
@@ -52,11 +53,14 @@ public class PlayMain extends JPanel {
 	private GameStatus gameStatus; // 记录游戏状态
 	private HeroStatus heroStatus = HeroStatus.Common; // 英雄状态
 	public static BufferedImage backgroundImg; // 游戏界面背景图
+	public static BufferedImage pushImg; // 游戏界面背景图
+	public static BufferedImage gameOverImg; // 游戏界面背景图
+	
 	private static int heroImgWidth; // 英雄机图片的宽，用来计算画笔的角度
 	private static int heroImgHeight; // 英雄机图片的高，用来计算画笔的角度
 
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>(); // 全图子弹集合
-	private ArrayList<FlyingObject> flyObjList = new ArrayList<FlyingObject>(); // 飞行物集合
+	private ArrayList<Bullet> bullets ; // 全图子弹集合
+	private ArrayList<FlyingObject> flyObjList ; // 飞行物集合
 
 	private Plane hero; // 英雄飞机
 	private Timer timer = new Timer(); // 定时器
@@ -70,7 +74,6 @@ public class PlayMain extends JPanel {
 	private int score = 0; // 得分
 
 	private Random random = new Random();
-
 	private JFrame frame; // 窗口框架
 	private JMenuBar bar; // 菜单
 	private JMenu game; // 菜单项
@@ -81,6 +84,8 @@ public class PlayMain extends JPanel {
 	static {
 		try {
 			backgroundImg = ImageIO.read(PlayMain.class.getResource("../img/backgrand/back2.jpg"));
+			pushImg = ImageIO.read(PlayMain.class.getResource("../img/status/push.png"));
+			gameOverImg = ImageIO.read(PlayMain.class.getResource("../img/status/gameOver.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +97,6 @@ public class PlayMain extends JPanel {
 
 	/**
 	 * 初始化所有数据
-	 * 
 	 * @throws IOException
 	 */
 	public void init() throws IOException {
@@ -103,14 +107,20 @@ public class PlayMain extends JPanel {
 		initUI();
 
 		// 游戏状态为启动
-		gameStatus = GameStatus.Start;
+		gameStatus = GameStatus.Runing;
+		
+		bullets = new ArrayList<Bullet>();
+		
+		flyObjList = new ArrayList<FlyingObject>();
+		
+		score = 0;
 	}
 
 	/**
 	 * 初始化UI组件
 	 */
 	public void initUI() {
-		frame = new JFrame("飞机大战怀旧版"); // 实现五子棋游戏窗口框架
+		frame = new JFrame("飞机大战怀旧版"); // 实现窗口框架
 		textArea = new JTextArea();
 		bar = new JMenuBar(); // 建立菜单栏
 		game = new JMenu("菜单"); // 建立名为“游戏”的菜单
@@ -121,7 +131,6 @@ public class PlayMain extends JPanel {
 
 	/**
 	 * 初始化英雄机参数
-	 * 
 	 * @throws IOException
 	 */
 	public void initHeroPlan() throws IOException {
@@ -142,6 +151,8 @@ public class PlayMain extends JPanel {
 			drawBullet(g); // 画子弹
 			drawFlyObject(g); // 画飞行物
 			drawScore(g); // 画分数
+			drawGameStatus(g);//画状态
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -150,19 +161,22 @@ public class PlayMain extends JPanel {
 	public void drawMainView(Graphics g) throws IOException {
 		g.drawImage(backgroundImg, 0, 0, null);
 	}
+	
+	public void drawGameStatus(Graphics g){
+		
+		if(gameStatus == GameStatus.End){
+			g.drawImage(gameOverImg, 0, 0, null);
+		}
+		
+		if(gameStatus == GameStatus.Suspend){
+			g.drawImage(pushImg, 0, 0, null);
+		}
+	}
+	
 
 	public void drawHero(Graphics g) {
 
 		// 判断是否是虚化状态
-		// if(heroStatus == HeroStatus.Virtual){
-		// if(System.currentTimeMillis() - heroVirtualStart < 3000){
-		// hero.setImg("../img/hero/ship-Virtual.png");
-		// }else{
-		// heroStatus = HeroStatus.Common;
-		// hero.setImg("../img/hero/ship-Common.png");
-		// }
-		// }
-
 		boolean commen = true;
 
 		if (heroStatus != HeroStatus.Common) {
@@ -206,29 +220,19 @@ public class PlayMain extends JPanel {
 		for (int i = 0; i < flyObjList.size(); i++) {
 			flyObj = flyObjList.get(i);
 			g.drawImage(flyObj.getImg(), flyObj.getX(), flyObj.getY(), null);
-
-			// g.drawLine(x1, y1, x2, y2);
-			// g.drawLine(x1, y1, x2, y2);
-			// g.drawLine(x1, y1, x2, y2);
-			// g.drawLine(x1, y1, x2, y2);
 		}
 	}
 
 	public void drawScore(Graphics g) {
-
 		int x = 10; // x坐标
 		int y = 25; // y坐标
 		Font font = new Font(Font.SANS_SERIF, Font.BOLD, 16); // 字体
 		g.setColor(Color.RED);
 		g.setFont(font); // 设置字体
-		g.drawString("SCORE:" + score, x, y += 20); // 画分数
-		g.drawString("LIFE:" + hero.getLife(), x, y += 20); // 画命
-
-		// 测试数据
-		g.drawString("攻击速度 :" + 1000 / intervel / heroAttSpeed, x, y += 20);
+		g.drawString("得分:" + score, x, y += 20); // 画分数
+		g.drawString("生命:" + hero.getLife(), x, y += 20); // 画命
+		g.drawString("攻击速度 :" + heroAttSpeed , x, y += 20);
 		g.drawString("火力值 :" + hero.getFirepower(), x, y += 20);
-		g.drawString("bullets.size:" + bullets.size(), x, y += 20);
-		g.drawString("flyObjList.size:" + flyObjList.size(), x, y += 20);
 	}
 
 	public void frameManage() {
@@ -254,6 +258,24 @@ public class PlayMain extends JPanel {
 			}
 
 		});
+		
+		//鼠标移入移出事件
+		addMouseListener(new MouseAdapter() {
+			
+			@Override
+            public void mouseEntered(MouseEvent e) { // 鼠标进入
+				if(gameStatus != GameStatus.End){
+					gameStatus = GameStatus.Runing;
+				}
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) { // 鼠标退出
+            	if(gameStatus != GameStatus.End){
+            		gameStatus = GameStatus.Suspend;
+            	}
+            }
+		});
 
 		// 点关闭按钮事件
 		frame.addWindowListener(new WindowAdapter() {
@@ -262,7 +284,6 @@ public class PlayMain extends JPanel {
 				// 添加消息对话框
 				if (JOptionPane.showConfirmDialog(null, str, "退出游戏",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
 					System.exit(0); // 退出
 				}
 			}
@@ -275,7 +296,11 @@ public class PlayMain extends JPanel {
 				// 添加消息对话框
 				if (JOptionPane.showConfirmDialog(null, str, "重新开始",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					repaint(); // 重绘
+					try {
+						init();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} 
 				}
 			}
 		});
@@ -332,8 +357,10 @@ public class PlayMain extends JPanel {
 	 * 随机生成飞行物
 	 */
 	public void randomEnemyPlany() {
+		if(gameStatus != GameStatus.Runing) return;
+		
 		if (enemyPlanInterver % 50 == 0) {
-			int ran = random.nextInt(10);
+			int ran = random.nextInt(20);
 			if (ran == 1) {
 				FlyingObject prize = new LifePrize();
 				prize.setX(random.nextInt(GAME_WIDTH - prize.getImgWidth()));
@@ -344,7 +371,7 @@ public class PlayMain extends JPanel {
 				prize.setX(random.nextInt(GAME_WIDTH - prize.getImgWidth()));
 				prize.setY(0);
 				flyObjList.add(prize);
-			} else if (ran > 8) {
+			} else if (ran > 17) {
 				EnemyThree eplane = new EnemyThree();
 				eplane.setX(random.nextInt(GAME_WIDTH - eplane.getImgWidth()));
 				eplane.setY(0);
@@ -363,7 +390,8 @@ public class PlayMain extends JPanel {
 	 * 运动一步
 	 */
 	public void nextStep() {
-
+		if(gameStatus != GameStatus.Runing) return;
+		
 		// 子弹运动
 		for (int i = 0; i < bullets.size(); i++) bullets.get(i).step();
 
@@ -375,7 +403,7 @@ public class PlayMain extends JPanel {
 	 * 射击
 	 */
 	public void heroShooting() {
-
+		if(gameStatus != GameStatus.Runing) return;
 		/**
 		 * 英雄机射击
 		 */
@@ -463,15 +491,9 @@ public class PlayMain extends JPanel {
 						setPrize(prize); // 设置奖励
 						
 						// 移除飞行物
-//						ArrayList<FlyingObject> flyObjBak = new ArrayList<>();
-//						flyObjList.set(i, flyObjList.get(flyObjList.size() - 1));
-//						for (int k = 0; k < flyObjList.size() - 1; k++)
-//							flyObjBak.add(flyObjList.get(k));
-//						flyObjList = flyObjBak;
-						
 						removeEnemy(i);
 					} else {
-						if (hero.getLife() == 0) {
+						if (hero.getLife() == 1) {
 							return true;
 						} else {
 							Plane enemy = (Plane) flyObjList.get(i);
@@ -485,14 +507,16 @@ public class PlayMain extends JPanel {
 			
 			//与子弹的碰撞检查
 			for (int i = 0; i < bullets.size(); i++) {
-				if (bullets.get(i).inspectCollision(hero)) {
-					if (hero.getLife() == 0) {
-						return true;
-					} else {
-						hero.setLife(hero.getLife() - bullets.get(i).getHurt());
-						heroStatus = HeroStatus.Virtual;
-						heroVirtualStart = System.currentTimeMillis();
-						removeBullet(i);
+				if(!bullets.get(i).getType()){
+					if (bullets.get(i).inspectCollision(hero)) {
+						if (hero.getLife() == 1) {
+							return true;
+						} else {
+							hero.setLife(hero.getLife() - bullets.get(i).getHurt());
+							heroStatus = HeroStatus.Virtual;
+							heroVirtualStart = System.currentTimeMillis();
+							removeBullet(i);
+						}
 					}
 				}
 			}
@@ -507,8 +531,8 @@ public class PlayMain extends JPanel {
 		Bullet bullet;
 		Enemy enemy;
 		Prize prize;
-		ArrayList<FlyingObject> flyObjBak;
-		ArrayList<Bullet> bulletsBak;
+//		ArrayList<FlyingObject> flyObjBak;
+//		ArrayList<Bullet> bulletsBak;
 
 		if (!bullets.isEmpty()) {
 			for (int i = 0; i < bullets.size(); i++) {
@@ -516,23 +540,17 @@ public class PlayMain extends JPanel {
 				if (!flyObjList.isEmpty()) {
 					flyObj: for (int j = 0; j < flyObjList.size(); j++) {
 						
-						
-						//如果子弹是英雄机发出并且飞行物是敌机
-						if(bullet.getType() &&  flyObjList.get(j) instanceof Enemy){
+						//如果子弹是英雄机发出
+						if(bullet.getType()){
 							
 							if (bullet.inspectCollision(flyObjList.get(j))) {
 								if (flyObjList.get(j) instanceof Prize) {// 判断敌机是伤害敌机还是奖励
 									/**
 									 * 获取奖励内容 设置对应奖励
 									 */
-									flyObjBak = new ArrayList<>();
 									prize = (Prize) flyObjList.get(j);
 									setPrize(prize);// 设置奖励
 									removeEnemy(j); 
-//									flyObjList.set(j, flyObjList.get(flyObjList.size() - 1));
-//									for (int k = 0; k < flyObjList.size() - 1; k++)
-//										flyObjBak.add(flyObjList.get(k));
-//									flyObjList = flyObjBak;
 								} else {
 									/**
 									 * 用子弹的伤害值与敌机生命值相减 如果敌机生命值为0，删除敌机
@@ -540,25 +558,13 @@ public class PlayMain extends JPanel {
 									enemy = (Enemy) flyObjList.get(j);
 									enemy.setLife(enemy.getLife() - bullet.getHurt());
 									if (enemy.getLife() <= 0) {
-										flyObjBak = new ArrayList<>();
-										
 										removeEnemy(j);
 										score += enemy.getScope();
-//										flyObjList.set(j, flyObjList.get(flyObjList.size() - 1));
-//										for (int k = 0; k < flyObjList.size() - 1; k++)
-//											flyObjBak.add(flyObjList.get(k));
-//										flyObjList = flyObjBak;
 									}
 								}
 								
 								// 移除子弹
 								removeBullet(i);
-//								bulletsBak = new ArrayList<>();
-//								bullets.set(i, bullets.get(bullets.size() - 1));
-//								for (int k = 0; k < bullets.size() - 1; k++) {
-//									bulletsBak.add(bullets.get(k));
-//								}
-//								bullets = bulletsBak;
 								break flyObj;
 							}
 						}
